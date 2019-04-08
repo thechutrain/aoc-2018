@@ -5,11 +5,12 @@
  *
  */
 
+#include <stdlib.h>  // for atoi()
 #include <stdio.h>
 #include <string.h>
 
 // #define max_int_size 5
-// #define file_name frequency.txt // DOESNT WORK
+// #define file_name frequency.txt // DOESNT WORK, why??
 char file_name[] = "test.txt";
 int total_sum = 0;
 //int isPositive(){}
@@ -19,12 +20,34 @@ int total_sum = 0;
  * 
  *
  */
-void addNumber(char *c) {
+int parseToInt(char *c) {
+  int i;
   int sign;
+  int curr_int = 0;
   sign = (*c == '-') ? -1 : 1; 
+ 
+  // NOTE: since its an array of chars (each number is actually an ASCII number
+  i = 1;
+  do {
+    printf("C[i]: %i\n", atoi(c + i));
+    //curr_int = (curr_int * 10) + atoi(c + i);
+    //curr_int = (curr_int * 10) + *(c + i); // these are equivalent!
+    i++;
+  } while (c[i] != '\0');
+
+  /**
+  while (c[i] != '\0') {
+    printf("C[i]: %c\n", c[i]);
+    curr_int = (curr_int * 10) + atoi(c + i);
+    //curr_int = (curr_int * 10) + *(c + i); // these are equivalent!
+    i++;
+  }
+  */ 
   // printf("%i", sign);
 
-//  printf("%s", c);
+
+  printf("PARSED INT: %i\n", curr_int);
+  return 2 * curr_int;
 }
 
 
@@ -41,6 +64,7 @@ void readEachLine(FILE *fp) {
   char line[10]; 
   char ch;
   int i = 0;
+  int curr_int;
 
   while((ch=fgetc(fp)) != EOF) {
     //printf("%c\n", ch); 
@@ -50,7 +74,8 @@ void readEachLine(FILE *fp) {
       //printf("String length: %lu\n", strlen(line));
     
       // reset:
-      addNumber(line);
+      curr_int = parseToInt(line);
+      printf("parsed int plus 5: %i \n", curr_int + 5);
       i = 0;
       clearBuffer(line, sizeof(line));
      
