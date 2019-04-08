@@ -11,7 +11,7 @@
 
 // #define max_int_size 5
 // #define file_name frequency.txt // DOESNT WORK, why??
-char file_name[] = "test.txt";
+char file_name[] = "frequency.txt";
 int total_sum = 0;
 //int isPositive(){}
 
@@ -21,33 +21,13 @@ int total_sum = 0;
  *
  */
 int parseToInt(char *c) {
-  int i;
   int sign;
-  int curr_int = 0;
   sign = (*c == '-') ? -1 : 1; 
- 
-  // NOTE: since its an array of chars (each number is actually an ASCII number
-  i = 1;
-  do {
-    printf("C[i]: %i\n", atoi(c + i));
-    //curr_int = (curr_int * 10) + atoi(c + i);
-    //curr_int = (curr_int * 10) + *(c + i); // these are equivalent!
-    i++;
-  } while (c[i] != '\0');
+  int curr_int = sign * atoi(c + 1);
 
-  /**
-  while (c[i] != '\0') {
-    printf("C[i]: %c\n", c[i]);
-    curr_int = (curr_int * 10) + atoi(c + i);
-    //curr_int = (curr_int * 10) + *(c + i); // these are equivalent!
-    i++;
-  }
-  */ 
-  // printf("%i", sign);
+//  printf("Curr int: %i\n", curr_int);
 
-
-  printf("PARSED INT: %i\n", curr_int);
-  return 2 * curr_int;
+  return sign * atoi(c + 1);
 }
 
 
@@ -57,7 +37,7 @@ void clearBuffer(char *line, int size) {
   for (i=0; i<size; i++) {
     line[i]='\0'; 
   }
-  puts(line);
+//  puts(line);
 }
 
 void readEachLine(FILE *fp) {
@@ -75,7 +55,7 @@ void readEachLine(FILE *fp) {
     
       // reset:
       curr_int = parseToInt(line);
-      printf("parsed int plus 5: %i \n", curr_int + 5);
+      total_sum += curr_int;
       i = 0;
       clearBuffer(line, sizeof(line));
      
@@ -100,7 +80,7 @@ main(){
   } else {
      // printf("opened file");
     readEachLine(fp);
-
+    printf("The total sum is: %i", total_sum);
     fclose(fp);
   }
 
