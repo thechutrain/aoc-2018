@@ -9,15 +9,15 @@
  *
  */
 
-#include <stdio.h>
+#include <stdio.h> //FILE, fopen, fclose
+#include <string.h> // memset()
 
-static int pFreqLtrs[25] = {0}; // adds the value to the heap
 int num_2_ltrs = 0;
 int num_3_ltrs = 0;
 
 
 int*
-letterFrequency(char *word) {
+letterFrequency(char *word, int *pFreqLtrs) {
   // NOTE: assuming all chars are lowercase
   int i;
   while (*word != '\0') {
@@ -30,7 +30,7 @@ letterFrequency(char *word) {
 }
 
 void
-countTwoThreeLtrs() {
+countTwoThreeLtrs(int *pFreqLtrs) {
  int hasTwoLtr = 0;
  int hasThreeLtr = 0;
 
@@ -59,7 +59,10 @@ countTwoThreeLtrs() {
 int
 main() {
   FILE *pfile;
-  //int *pFreq;
+  int pFreq[25] = {0};
+  char line[20];
+  char ch;
+  int i = 0;
 
  if (!(pfile = fopen("input.txt", "r"))) {
   fprintf(stderr, "There was an error writing opening the file");
@@ -74,11 +77,29 @@ main() {
   * 3) pass the int* into a fn that checks if char appears twice, or three times
   *
   */
+  while((ch=fgetc(pfile) != EOF)) {
+    if (ch == '\0') {
+      letterFrequency(line, pFreq);
+      countTwoThreeLtrs(pFreq);
+      memset(pFreq, 0, 25);
+      memset(pFreq, '\0', 20);
+      i = 0;
+    } else {
+      line[i]=ch;
+      i++; 
+    }
+  }
+  
+/**
+  letterFrequency("aa", pFreq);
+  countTwoThreeLtrs(pFreq);
+  memset(pFreq, 0, 25);
+  
+  puts("=== second word === \n");
 
-
-  letterFrequency("abbccz");
-
-  countTwoThreeLtrs();
+  letterFrequency("bbb", pFreq);
+  countTwoThreeLtrs(pFreq);
+*/
 
  fclose(pfile);
   return 0;
