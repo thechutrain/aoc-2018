@@ -11,32 +11,50 @@
 
 #include <stdio.h>
 
-static int pFreqLetters[25]; // adds the value to the heap
+static int pFreqLtrs[25] = {0}; // adds the value to the heap
+int num_2_ltrs = 0;
+int num_3_ltrs = 0;
+
 
 int*
 letterFrequency(char *word) {
+  // NOTE: assuming all chars are lowercase
   int i;
-
   while (*word != '\0') {
-    printf("C: %c -- ", *word);
-    printf("I: %i -- ", *word);
-    printf("D: %d -- ", *word);
-    //i = *word - '0'; // keeps it as a char (1 byte)
-    i = *word - 0; // Promotion, casts char to int (2 bytes?) 
-    printf("Casted to int: %i\n", i);
+    i = *word - 97; // Promotion, casts char to int (2 bytes?) 
+    pFreqLtrs[i] +=1;
     word++;
   }
-
-  /**
-  while (*(word + i) != '\0') {
-    printf("%c\n", word[i]);
-    //((int)word[i]);
-
-    i++;
-  }
-  */
-  return pFreqLetters;
+  
+  return pFreqLtrs;
 }
+
+void
+countTwoThreeLtrs() {
+ int hasTwoLtr = 0;
+ int hasThreeLtr = 0;
+
+ int i;
+ for (i=0; i< 26; i++) {
+   if (pFreqLtrs[i] == 2) {
+    hasTwoLtr = 1; 
+   }
+   if (pFreqLtrs[i] == 3) {
+    hasThreeLtr= 1; 
+   }
+ }
+
+ if(hasTwoLtr) {
+    num_2_ltrs += 1;
+    puts("Has at least one letter that appears twice");
+ }
+
+ if(hasThreeLtr) {
+    num_3_ltrs +=1;
+    puts("Has at least one letter that appears three times");
+ }
+}
+
 
 int
 main() {
@@ -57,8 +75,10 @@ main() {
   *
   */
 
-  letterFrequency("abc");
 
+  letterFrequency("abbccz");
+
+  countTwoThreeLtrs();
 
  fclose(pfile);
   return 0;
